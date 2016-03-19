@@ -11,8 +11,10 @@ console.log(window.innerHeight);
 
 var c = document.getElementById("game");
 var ctx = c.getContext("2d");
-c.width  = window.innerWidth;
-c.height = window.innerHeight;
+gamewindow_w = window.innerWidth-100;
+gamewindow_h = window.innerHeight-100;
+c.width  = gamewindow_w;
+c.height = gamewindow_h;
 var x = 100;
 var y = 100;
 var moveleft = false;
@@ -117,15 +119,15 @@ function collision(){
     if(x < 0 ){
         x = 0;
     }
-    else if( x > window.innerWidth-50 ){
-        x = window.innerWidth-50;
+    else if( x > gamewindow_w-50 ){
+        x = gamewindow_w-50;
     }
     
-    if(y < 0){
-        y = 0;
+    if(y < 10){
+        y = 10;
     }
-    else if(y > window.innerHeight-50){
-        y = window.innerHeight-50;
+    else if(y > gamewindow_h-10){
+        y = gamewindow_h-10;
     }
 }
 
