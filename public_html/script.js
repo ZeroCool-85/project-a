@@ -15,14 +15,24 @@ gamewindow_w = window.innerWidth-100;
 gamewindow_h = window.innerHeight-100;
 c.width  = gamewindow_w;
 c.height = gamewindow_h;
-var x = 100;
-var y = 100;
+var model = new Image();
+model.src = 'img/holder_sprite.png';
+      
+var player = {
+    x:100,
+    y:100,
+    spd: 5,
+    imageObj: model,
+    direction: 0,
+    animation: 0
+};
+
 var moveleft = false;
 var moveup = false;
 var moveright = false;
 var movedown = false;
 
-setInterval(gameloop, 10);
+setInterval(gameloop, 40);
 
 function preventDefault(event) {
   event.preventDefault();
@@ -97,51 +107,71 @@ function moveControls(){
 }
 
 function playerMove(){
-    if(moveleft){
-        x -= 10;
+    if(moveleft && !(player.x < 0) ){
+        player.animation += 1;
+        player.direction = 1;
+        player.x -= player.spd;
     }
-    if(moveup){
-        y -= 10;
+    if(moveup && !(player.y-5 < 0)){
+        player.animation += 1;
+        player.direction = 3;
+        player.y -= player.spd;
     }
-    if(moveright){
-        x += 10;
+    if(moveright && !(player.x > gamewindow_w-38)){
+        player.animation += 1;
+        player.direction = 2;
+        player.x += player.spd;
     }
-    if(movedown){
-        y += 10;
+    if(movedown && !(player.y > gamewindow_h-52)){
+        player.animation += 1;
+        player.direction = 0;
+        player.y += player.spd;
     }
 }
 
 function drawPlayer(){
-    ctx.fillText("Player",x,y);
+    
+    var spriteWidth     = player.imageObj.width/3;
+    var spriteHeight    = player.imageObj.height/4;
+    var spriteAnimation = player.animation%3;
+    
+    ctx.drawImage(player.imageObj, 
+        spriteAnimation*spriteWidth,player.direction*spriteHeight, 
+        spriteWidth, spriteHeight,
+        player.x, player.y,
+        player.imageObj.width/5, player.imageObj.height/5);
+        console.log( player.imageObj.width/5);
+        console.log(player.imageObj.height/5);
 }
 
+/* unbenutzt */
 function collision(){
-    if(x < 0 ){
-        x = 0;
+    if((player.x-10) < 0 ){   
+        return true;
     }
-    else if( x > gamewindow_w-50 ){
-        x = gamewindow_w-50;
+    else if((player.x+10) > gamewindow_w-50 ){
+        return true;
     }
     
-    if(y < 10){
-        y = 10;
+    if((player.y-10) < 0){
+        return true;
     }
-    else if(y > gamewindow_h-10){
-        y = gamewindow_h-10;
+    else if((player.y+10) > gamewindow_h-10){
+        return true;
     }
+    return false;
 }
 
 function gameloop(){
     ctx.clearRect(0, 0, window.screen.availWidth, window.screen.availHeight);
     moveControls();
-    playerMove();
+    playerMove(); 
     drawPlayer();
-    collision();
-    console.log(movedown);
-    console.log(moveleft);
-    console.log(moveright);
-    console.log(moveup);
-    console.log(x);
-    console.log(y);
+    console.log("down: " + movedown);
+    console.log("left: " + moveleft);
+    console.log("right: " + moveright);
+    console.log("up: " + moveup);
+    console.log("x= " + player.x);
+    console.log("y= " + player.y);
     
 }
