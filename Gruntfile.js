@@ -1,10 +1,35 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-module.exports = function (grunt) {
-    // Project configuration.
+module.exports = function(grunt) {
+
     grunt.initConfig({
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: [
+                    'modules/index.js',
+                    'modules/addon_shit.js'
+                ],
+                dest: 'public_html/script.js'
+            }
+        },
+
+        watch: {
+            scripts: {
+                files: ['**/*.js'],
+                tasks: ['concat'],
+                options: {
+                    spawn: false
+                }
+            }
+        }
     });
+
+    grunt.loadNpmTasks('grunt-fast-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    // Default task(s).
+    grunt.registerTask('default', ['concat']);
+
+
 };
