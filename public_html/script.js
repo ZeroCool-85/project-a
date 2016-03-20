@@ -11,9 +11,11 @@ console.log(window.innerHeight);
 
 var c       = document.getElementById("game");
 var ctx     = c.getContext("2d");
-var model   = new Image();
+var playerModel   = new Image();
+var enemyModel    = new Image();
 var map     = new Image();
-model.src   = 'img/holder_sprite.png';
+playerModel.src   = 'img/holder_sprite.png';
+enemyModel.src    = 'img/holder_sprite.png';
 map.src     = 'img/map.gif';
 
 gamewindow_w    = 1024;
@@ -25,7 +27,16 @@ var player = {
     x:100,
     y:100,
     spd: 5,
-    img: model,
+    img: playerModel,
+    direction: 0,
+    animation: 0
+};
+
+var enemy = {
+    x:600,
+    y:400,
+    spd: 5,
+    img: enemyModel,
     direction: 0,
     animation: 0
 };
@@ -34,8 +45,15 @@ var moveleft = false;
 var moveup = false;
 var moveright = false;
 var movedown = false;
-
 setInterval(gameloop, 40);
+
+function logBox(){
+    ctx.fillStyle = 'black'; 
+    ctx.fillRect(824,0,200,100);
+    ctx.fillStyle = 'white'; 
+    ctx.fillText('Player X: ' +player.x, 830, 10);
+    ctx.fillText('Player Y: ' +player.y, 830, 20);
+}
 
 function preventDefault(event) {
   event.preventDefault();
@@ -147,6 +165,31 @@ function drawPlayer(){
         console.log(player.img.height/5);
 }
 
+function drawEnemy(){
+    
+    var spriteWidth     = enemy.img.width/3;
+    var spriteHeight    = enemy.img.height/4;
+    //var spriteAnimation = enemy.animation%3;
+    
+    ctx.drawImage(enemy.img,
+        0,0, 
+        spriteWidth, spriteHeight,
+        enemy.x, enemy.y,
+        enemy.img.width/5, enemy.img.height/5);
+        console.log(enemy);
+}
+
+function enemyMove(){
+    if(enemy.x > 620){
+        enemy.spd = enemy.spd * (-1);
+    }
+    else if(enemy.x < 500){
+        enemy.spd = enemy.spd * (-1);
+    }  
+    enemy.x += enemy.spd;
+    enemy.y -= enemy.spd;
+}
+
 function drawMap(){
     ctx.drawImage(map,0,0);
 }
@@ -173,13 +216,15 @@ function gameloop(){
     ctx.clearRect(0, 0, window.screen.availWidth, window.screen.availHeight);
     moveControls();
     playerMove();
+    enemyMove();
     drawMap();
     drawPlayer();
+    drawEnemy();
+    logBox();
     console.log("down: " + movedown);
     console.log("left: " + moveleft);
     console.log("right: " + moveright);
     console.log("up: " + moveup);
     console.log("x= " + player.x);
-    console.log("y= " + player.y);
-    
+    console.log("y= " + player.y); 
 }
