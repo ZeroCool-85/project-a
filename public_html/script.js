@@ -9,20 +9,23 @@
 console.log(window.innerWidth);
 console.log(window.innerHeight);
 
-var c = document.getElementById("game");
-var ctx = c.getContext("2d");
-gamewindow_w = window.innerWidth-100;
-gamewindow_h = window.innerHeight-100;
-c.width  = gamewindow_w;
-c.height = gamewindow_h;
-var model = new Image();
-model.src = 'img/holder_sprite.png';
+var c       = document.getElementById("game");
+var ctx     = c.getContext("2d");
+var model   = new Image();
+var map     = new Image();
+model.src   = 'img/holder_sprite.png';
+map.src     = 'img/map.gif';
+
+gamewindow_w    = 1024;
+gamewindow_h    = 768;
+c.width     = gamewindow_w;
+c.height    = gamewindow_h;
       
 var player = {
     x:100,
     y:100,
     spd: 5,
-    imageObj: model,
+    img: model,
     direction: 0,
     animation: 0
 };
@@ -131,17 +134,21 @@ function playerMove(){
 
 function drawPlayer(){
     
-    var spriteWidth     = player.imageObj.width/3;
-    var spriteHeight    = player.imageObj.height/4;
+    var spriteWidth     = player.img.width/3;
+    var spriteHeight    = player.img.height/4;
     var spriteAnimation = player.animation%3;
     
-    ctx.drawImage(player.imageObj, 
+    ctx.drawImage(player.img, 
         spriteAnimation*spriteWidth,player.direction*spriteHeight, 
         spriteWidth, spriteHeight,
         player.x, player.y,
-        player.imageObj.width/5, player.imageObj.height/5);
-        console.log( player.imageObj.width/5);
-        console.log(player.imageObj.height/5);
+        player.img.width/5, player.img.height/5);
+        console.log( player.img.width/5);
+        console.log(player.img.height/5);
+}
+
+function drawMap(){
+    ctx.drawImage(map,0,0);
 }
 
 /* unbenutzt */
@@ -165,7 +172,8 @@ function collision(){
 function gameloop(){
     ctx.clearRect(0, 0, window.screen.availWidth, window.screen.availHeight);
     moveControls();
-    playerMove(); 
+    playerMove();
+    drawMap();
     drawPlayer();
     console.log("down: " + movedown);
     console.log("left: " + moveleft);
