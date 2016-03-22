@@ -1,4 +1,7 @@
 
+function init(){
+    Collisions.setPlayer(player);
+}
 
 //console.log(window.innerWidth);
 //console.log(window.innerHeight);
@@ -26,7 +29,9 @@ var player = {
     spd: 5,
     img: playerModel,
     direction: 0,
-    animation: 0
+    animation: 0,
+    width: playerModel.width/5,
+    height : playerModel.height/5
 };
 
 var enemy = {
@@ -157,7 +162,7 @@ function drawPlayer(){
         spriteAnimation*spriteWidth,player.direction*spriteHeight,
         spriteWidth, spriteHeight,
         player.x, player.y,
-        player.img.width/5, player.img.height/5);
+        player.width, player.height);
     //console.log( player.img.width/5);
     //console.log(player.img.height/5);
 }
@@ -191,23 +196,18 @@ function drawMap(){
     ctx.drawImage(map,0,0);
 }
 
-/* unbenutzt */
-function collision(){
-    if((player.x-10) < 0 ){
-        return true;
+var Collisions = {
+    player: null,
+    hasCollision: function (x1, y1, w1, h1, x2, y2, w2, h2) {
+        return !(x1+w1<x2 || x2+w2<x1 || y1+h1<y2 || y2+h2<y1);
+    },
+    hasPlayerCollision: function (x,y,w,h){
+        return this.player === null ? false : this.hasCollision(x,y,w,h,this.player.x, this.player.y, this.player.width, this.player.height);
+    },
+    setPlayer: function(player){
+        this.player = player;
     }
-    else if((player.x+10) > gamewindow_w-50 ){
-        return true;
-    }
-
-    if((player.y-10) < 0){
-        return true;
-    }
-    else if((player.y+10) > gamewindow_h-10){
-        return true;
-    }
-    return false;
-}
+};
 
 function gameloop(){
     ctx.clearRect(0, 0, window.screen.availWidth, window.screen.availHeight);
@@ -244,3 +244,7 @@ function registerModule(modulename, module){
 function removeModule(modulename){
     delete modules[modulename];
 }
+
+
+
+init();
