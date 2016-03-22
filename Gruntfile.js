@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-fast-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    // Default task(s).
+    //Default.task(s)
     grunt.registerTask('default', ['concat']);
 
 

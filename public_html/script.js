@@ -3,9 +3,6 @@ function init(){
     Collisions.setPlayer(player);
 }
 
-//console.log(window.innerWidth);
-//console.log(window.innerHeight);
-
 var c       = document.getElementById("game");
 var ctx     = c.getContext("2d");
 var playerModel   = new Image();
@@ -33,6 +30,9 @@ var player = {
     width: playerModel.width/5,
     height : playerModel.height/5
 };
+
+console.log(playerModel.width/5);
+console.log(playerModel.height/5);
 
 var enemy = {
     x:600,
@@ -162,7 +162,7 @@ function drawPlayer(){
         spriteAnimation*spriteWidth,player.direction*spriteHeight,
         spriteWidth, spriteHeight,
         player.x, player.y,
-        player.width, player.height);
+        player.img.width/5, player.img.height/5);
     //console.log( player.img.width/5);
     //console.log(player.img.height/5);
 }
